@@ -23,10 +23,12 @@ public class SelectProductMDA
         options.AddAdditionalCapability(MobileCapabilityType.PlatformName, "Android");
         options.AddAdditionalCapability(MobileCapabilityType.PlatformVersion, "9.0");
         options.AddAdditionalCapability(MobileCapabilityType.DeviceName, "Samsung Galaxy S9 FHD GoogleAPI Emulator");
-        options.AddAdditionalCapability(MobileCapabilityType.App, "storage:filename=mda-1.0.17-20.apk");
-        options.AddAdditionalCapability("newCommandTimeout", 90);
+        options.AddAdditionalCapability(MobileCapabilityType.App, "storage:filename=mda-2.0.0-21.apk");
+        options.AddAdditionalCapability("appPackage", "com.saucelabs.mydemoapp.android");
+        options.AddAdditionalCapability("appActivity", "com.saucelabs.mydemoapp.android.view.activities.SplashActivity");
+        options.AddAdditionalCapability("newCommandTimeout", 30);
 
-        driver = new AndroidDriver<AndroidElement>(remoteAddress: URI, driverOptions: options, commandTimeout: TimeSpan.FromSeconds(180));
+        driver = new AndroidDriver<AndroidElement>(remoteAddress: URI, driverOptions: options, commandTimeout: TimeSpan.FromSeconds(120));
     }
 
     [TearDown]
@@ -41,10 +43,10 @@ public class SelectProductMDA
     {
         Assert.That(driver.FindElement(MobileBy.AccessibilityId("App logo and name")).Displayed, Is.True);
 
-        driver.FindElement(MobileBy.AccessibilityId("Sauce Lab Back Packs")).Click();
+        driver.FindElement(MobileBy.AccessibilityId("Sauce Labs Backpack")).Click();
 
         String tituloProduto = driver.FindElement(MobileBy.Id("com.saucelabs.mydemoapp.android:id/productTV")).Text;
-        Assert.That(tituloProduto, Is.EqualTo("Sauce Lab Back Packs"));
+        Assert.That(tituloProduto, Is.EqualTo("Sauce Labs Backpack"));
 
         String precoProduto = driver.FindElement(MobileBy.Id("com.saucelabs.mydemoapp.android:id/priceTV")).Text;
         Assert.That(precoProduto, Is.EqualTo("$ 29.99"));
@@ -55,7 +57,7 @@ public class SelectProductMDA
         actionOne.Release();
         actionOne.Perform();
 
-        driver.FindElement(MobileBy.AccessibilityId("Tap to add product to cart")).Click();
+        driver.FindElement(MobileBy.Id("com.saucelabs.mydemoapp.android:id/cartBt")).Click();
 
         String numeroCarrinho = driver.FindElement(MobileBy.Id("com.saucelabs.mydemoapp.android:id/cartTV")).Text;
         Assert.That(numeroCarrinho, Is.EqualTo("1"));
